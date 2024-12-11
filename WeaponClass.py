@@ -1,4 +1,3 @@
-
 class Weapon:
     def __init__(self, Dmg, Stamina):
         self._dmg = Dmg
@@ -16,11 +15,11 @@ class Cutlass(Weapon):
     def get_dmg(self):
         return self.dmg
     def get_desc():
-        print()
+        print("A basic blade with blunt edges. The only weapon you could find.")
     def attack1_msg(self):
-        pass
+        print("You cut the enemy")
     def attack2_msg(self):
-        pass
+        print("You plunge at the enemy")
 
 class Mace(Weapon):
     def __init__(self, Dmg, Stamina):
@@ -28,12 +27,11 @@ class Mace(Weapon):
     def get_dmg(self):
         return self.dmg
     def get_desc():
-        print()
+        print("A very heavy, spiked, iron ball. Capable of very large bursts of damage.")
     def attack1_msg(self):
-        pass
+        print("You swing your mace.")
     def attack2_msg(self):
-        pass
-    # Weapon Attacks go here
+        print("You charge your mace and throw it at the enemy")
 
 class Katana(Weapon):
     def __init__(self, Dmg, Stamina):
@@ -41,11 +39,11 @@ class Katana(Weapon):
     def get_dmg(self):
         return self.dmg
     def get_desc():
-        print()
+        print("A versatile blade crafted with care. Capable of  very quick attacks")
     def attack1_msg(self):
-        pass
+        print("You slice the enemy")
     def attack2_msg(self):
-        pass
+        print("You drive your katana into the enemy")
     # Weapon Attacks go here
 
 class Scythe(Weapon):
@@ -54,28 +52,32 @@ class Scythe(Weapon):
     def get_dmg(self):
         return self.dmg
     def get_desc():
-        print()
+        print("A heavy weapon, topped with a long, curved edge. Capable of large and  slight quick attacks.")
     def attack1_msg(self):
-        pass
+        print("You hack at the enemy")
     def attack2_msg(self):
-        pass
+        print("You slash at the enemy")
     # Weapon Attacks go here
 
-class Club(Weapon):
+class Club(Weapon):          
+
     def __init__(self, Dmg, Stamina):
         super().__init__(Dmg, Stamina)
     def get_dmg(self):
         return self.dmg
     def get_desc():
-        print()
+        print("A very heavy hunk of metal, too large to be called a sword. Capable of extremely large attacks.")
     def attack1_msg(self):
-        pass
+        print("You swing at the enemy")
     def attack2_msg(self):
-        pass
+        print("You smash the enemy")
     # Weapon Attacks go here
 
         
                     #DAMAGE  STAMINA
+
+
+
 cutlass = Cutlass((6, 8), (10, 15))
 mace = Mace((10, 15), (20, 25))
 katana = Katana((8, 12), (10, 15))

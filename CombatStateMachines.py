@@ -7,6 +7,7 @@ class PlayerStateBase:
 
 class Tired_State(PlayerStateBase):
     def OnEnter(self):
+        self.player_ref._dmg / 1.5
         if self.player_ref._stamina > 10:
             print("act")
             return "active"
@@ -21,8 +22,10 @@ class Active_State(PlayerStateBase):
             return "active"
 class Strength_State(PlayerStateBase):
     def OnEnter(self):
+        self.player_ref._dmg * 1.2
         if self.player_ref._strength != True:
             print("str")
+            
             return "tired"
         else:
             return "strength"
@@ -41,18 +44,10 @@ class PlayerBuffStateMachine:
         if nextstate != self.currentState:
             nextstate = self.currentState
         return True
-    
-
-
 
 
 
                                             # TURN TRACKER STATE
-
-
-
-
-
 
 class CombatTurnBase:
     def __init__(self, context):
@@ -63,13 +58,42 @@ class CombatTurnBase:
 
 class EnemyTurn(CombatTurnBase):
     def OnEnter(self):
-        if self.player_red._player_combat_turn ==  True:
+        if self.player_ref._player_combat_turn ==  True:
             return "player"
         else:
             return "enemy"
 class PlayerTurn(CombatTurnBase):
     def OnEnter(self):
-        if self.player_ref._player_combatr_turn == False:
+        if self.player_ref._player_combat_turn == False:
+            return "enemy"
+        else:
+            return "player"
+class CombatTurnAlternatingStateMachine:
+    def __init__(self, player_ref):
+        self.states = {
+            "enemy" : EnemyTurn(self),
+            "player" : PlayerTurn(self),
+            }
+        self.currentState = "player"
+        self.player_ref = player_ref
+
+    def TransitionState(self):
+        nextstate = self.states[self.currentState].OnEnter()
+        if nextstate != self.currentState:
+            nextstate = self.currentState
+        return True
+
+
+
+class PlayerTurn(CombatTurnBase):
+    def OnEnter(self):
+        if self.player_ref._player_combat_turn ==  True:
+            return "player"
+        else:
+            return "enemy"
+class PlayerTurn(CombatTurnBase):
+    def OnEnter(self):
+        if self.player_ref._player_combat_turn == False:
             return "enemy"
         else:
             return "player"

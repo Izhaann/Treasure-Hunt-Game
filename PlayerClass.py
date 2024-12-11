@@ -1,6 +1,6 @@
 from CombatStateMachines import PlayerBuffStateMachine
 from WeaponClass import cutlass, mace, katana, scythe, club
-from EnemiesClass import skeleton, spider, ogres, pirates, berserkerfairies
+from EnemiesClass import skeleton, spider, ogres, pirates, berserkerfairies, pirate_king
 from rich.console import Console
 from rich.progress import Progress, TextColumn
 console = Console()
@@ -19,21 +19,23 @@ class Person(PlayerBuffStateMachine):
         self._currentweapon = cutlass
         self._defended = False
         self._player_combat_turn = True
+        self._strength = False
     def get_player_stats(self):
         with Progress(console=console) as progress:
             progress.add_task("[bold red]HP", total=self._maxHP, completed=self._hp)
+            progress.add_task("[blue]Stamina", total=self._maxStamina, completed=self._stamina)
     def set_dmg(self, damage):
         self._dmg = damage._dmg
     def add_hp(self, HP):
-        self._hp += HP._hp
+        self._hp += HP
     def get_hp(self):
         print(self._hp)
     def add_stamina(self, stamina):
         self._stamina += stamina._stamina
     def set_hp(self, HP):
         self._hp = HP._hp
-    def set_stamina(self, stamina):
-        self._stamina = stamina._stamina
+    def add_stamina(self, stamina):
+        self._stamina += stamina
     def get_stamina(self):
         print(self._stamina)
 
@@ -62,7 +64,7 @@ class Person(PlayerBuffStateMachine):
     
     
     def defend(self):
-        pass
+        self._defended = True
 
 
     def equip(self, weapon):
@@ -74,5 +76,8 @@ Player = Person(50, 50, 0, 50, 50, 50)
 Player2 = Person(50, 50, 0, 50, 50, 50)
 Player.equip(katana)
 Player.attack_1(skeleton)
-skeleton.get_hp()
-Player.get_stamina()
+# skeleton.get_hp()
+# Player.get_stamina()
+pirate_king.attack1(Player)
+Player.get_hp()
+Player.get_player_stats()
