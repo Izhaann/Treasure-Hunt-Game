@@ -3,6 +3,7 @@ from WeaponClass import cutlass, mace, katana, scythe, club
 from EnemiesClass import skeleton, spider, ogres, pirates, berserkerfairies, pirate_king
 from rich.console import Console
 from rich.progress import Progress, TextColumn
+from LocationClasses import Location, SkullyWagShores
 console = Console()
 
 
@@ -20,6 +21,7 @@ class Person(PlayerBuffStateMachine):
         self._defended = False
         self._player_combat_turn = True
         self._strength = False
+        self._currentLocation = SkullyWagShores
     def get_player_stats(self):
         with Progress(console=console) as progress:
             progress.add_task("[bold red]HP", total=self._maxHP, completed=self._hp)
@@ -30,8 +32,6 @@ class Person(PlayerBuffStateMachine):
         self._hp += HP
     def get_hp(self):
         print(self._hp)
-    def add_stamina(self, stamina):
-        self._stamina += stamina._stamina
     def set_hp(self, HP):
         self._hp = HP._hp
     def add_stamina(self, stamina):

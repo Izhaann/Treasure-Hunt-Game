@@ -1,4 +1,5 @@
 import random
+
 class Enemy():
     def __init__(self, HP, maxHP, appearance_msg):
         self._hp = HP
@@ -82,7 +83,7 @@ class Ghoul(Enemy):
         print("The ghoul phases through you.")
         player._hp -= self._dmg[0]
     def attack2(self, player):
-        print("The ghoul attacks your organs.")
+        print("The ghoul imbued a curse on you.")
         player._hp -= self._dmg[1]
 
 

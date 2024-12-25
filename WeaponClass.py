@@ -17,21 +17,20 @@ class Cutlass(Weapon):
     def get_desc():
         print("A basic blade with blunt edges. The only weapon you could find.")
     def attack1_msg(self):
-        print("You cut the enemy")
+        print("You slash at your foe.")
     def attack2_msg(self):
-        print("You plunge at the enemy")
-
+        print("With a swift flick, you deliver a sharp strike.")
 class Mace(Weapon):
     def __init__(self, Dmg, Stamina):
         super().__init__(Dmg, Stamina)
     def get_dmg(self):
         return self.dmg
     def get_desc():
-        print("A very heavy, spiked, iron ball. Capable of very large bursts of damage.")
+        print("A heavy, blunt weapon designed for crushing blows. Capable of very large bursts of damage.")
     def attack1_msg(self):
-        print("You swing your mace.")
+        print("You puncture your enemy with a brutal thrash.")
     def attack2_msg(self):
-        print("You charge your mace and throw it at the enemy")
+        print("The mace swings down with a bone-crushing force")
 
 class Katana(Weapon):
     def __init__(self, Dmg, Stamina):
@@ -39,11 +38,11 @@ class Katana(Weapon):
     def get_dmg(self):
         return self.dmg
     def get_desc():
-        print("A versatile blade crafted with care. Capable of  very quick attacks")
+        print("A versatile blade crafted with care. Capable of very swift attacks")
     def attack1_msg(self):
-        print("You slice the enemy")
+        print("You dice the enemy.")
     def attack2_msg(self):
-        print("You drive your katana into the enemy")
+        print("In a split second, your katana is resheathed as swift, fluid strikes lacerate your foe.")
     # Weapon Attacks go here
 
 class Scythe(Weapon):
@@ -52,11 +51,11 @@ class Scythe(Weapon):
     def get_dmg(self):
         return self.dmg
     def get_desc():
-        print("A heavy weapon, topped with a long, curved edge. Capable of large and  slight quick attacks.")
+        print("A curved blade forged for reaping, repurposed for combat. Capable of large and slightly quick attacks.")
     def attack1_msg(self):
-        print("You hack at the enemy")
+        print("Your curved blade cleaves through your foe.")
     def attack2_msg(self):
-        print("You slash at the enemy")
+        print("Your wicked blade reaps your foe, mercilessly scissoring the misty air.")
     # Weapon Attacks go here
 
 class Club(Weapon):          
@@ -68,9 +67,9 @@ class Club(Weapon):
     def get_desc():
         print("A very heavy hunk of metal, too large to be called a sword. Capable of extremely large attacks.")
     def attack1_msg(self):
-        print("You swing at the enemy")
+        print("Your club crashes down on the foe with a bone-crushing blow.")
     def attack2_msg(self):
-        print("You smash the enemy")
+        print("With a powerful swing, the club devastates the enemy, delivering shockwaves through the air.")
     # Weapon Attacks go here
 
         
