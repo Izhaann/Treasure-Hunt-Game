@@ -1,17 +1,20 @@
 class Weapon:
-    def __init__(self, Dmg, Stamina):
+    def __init__(self, name, Dmg, Stamina):
         self._dmg = Dmg
         self._stamina = Stamina
+        self.name = name
     def attack1(self, enemy):
         enemy._hp -= self._dmg[0]
     def attack2(self, enemy):
         enemy._hp -= self._dmg[1]
+    def GetWeaponName(self):
+        return self.name
         
     
 
 class Cutlass(Weapon):
-    def __init__(self, Dmg, Stamina):
-        super().__init__(Dmg, Stamina)
+    def __init__(self, name, Dmg, Stamina):
+        super().__init__(name, Dmg, Stamina)
     def get_dmg(self):
         return self.dmg
     def get_desc():
@@ -21,8 +24,8 @@ class Cutlass(Weapon):
     def attack2_msg(self):
         print("With a swift flick, you deliver a sharp strike.")
 class Mace(Weapon):
-    def __init__(self, Dmg, Stamina):
-        super().__init__(Dmg, Stamina)
+    def __init__(self, name, Dmg, Stamina):
+        super().__init__(name, Dmg, Stamina)
     def get_dmg(self):
         return self.dmg
     def get_desc():
@@ -33,8 +36,8 @@ class Mace(Weapon):
         print("The mace swings down with a bone-crushing force")
 
 class Katana(Weapon):
-    def __init__(self, Dmg, Stamina):
-        super().__init__(Dmg, Stamina)
+    def __init__(self, name, Dmg, Stamina):
+        super().__init__(name, Dmg, Stamina)
     def get_dmg(self):
         return self.dmg
     def get_desc():
@@ -46,8 +49,8 @@ class Katana(Weapon):
     # Weapon Attacks go here
 
 class Scythe(Weapon):
-    def __init__(self, Dmg, Stamina):
-        super().__init__(Dmg, Stamina)
+    def __init__(self, name, Dmg, Stamina):
+        super().__init__(name, Dmg, Stamina)
     def get_dmg(self):
         return self.dmg
     def get_desc():
@@ -60,8 +63,8 @@ class Scythe(Weapon):
 
 class Club(Weapon):          
 
-    def __init__(self, Dmg, Stamina):
-        super().__init__(Dmg, Stamina)
+    def __init__(self, name, Dmg, Stamina):
+        super().__init__(name, Dmg, Stamina)
     def get_dmg(self):
         return self.dmg
     def get_desc():
@@ -77,11 +80,11 @@ class Club(Weapon):
 
 
 
-cutlass = Cutlass((6, 8), (10, 15))
-mace = Mace((10, 15), (20, 25))
-katana = Katana((8, 12), (10, 15))
-scythe = Scythe((12, 16), (15, 20))
-club = Club((20, 25), (30, 40))
+cutlass = Cutlass("Cutlass", (6, 8), (10, 15))
+mace = Mace("Mace", (10, 15), (20, 25))
+katana = Katana("Katana", (8, 12), (10, 15))
+scythe = Scythe("Scythe", (12, 16), (15, 20))
+club = Club("Club", (20, 25), (30, 40))
 
 
 

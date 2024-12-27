@@ -8,7 +8,7 @@ class Enemy():
     def get_hp(self):
         return self._hp
     def appearance_msg(self):
-        print(self._appearance_msg)
+        return self._appearance_msg
 
 
 

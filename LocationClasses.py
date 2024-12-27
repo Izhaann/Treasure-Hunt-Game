@@ -7,12 +7,12 @@ from ChestClasses import chestDistributionWeights, WeightedChance, ItemAssignmen
 
 
 
-
 class Location(PlayerExplorationStateMachine):
-    def __init__(self, chest_probability, enemies):
+    def __init__(self, chest_probability, enemies, weapon):
         
         self._enemies = enemies
         self._chest_probability = chest_probability
+        self.weapon = weapon
 
     def GetChest(self):
         return (WeightedChance(self._chest_probability))
@@ -34,6 +34,8 @@ class Location(PlayerExplorationStateMachine):
 
 
 
-SkullyWagShores = Location((80, 15, 5), skeleton)
+SkullyWagShores = Location((80, 15, 5), skeleton, cutlass)
+
+
 print(SkullyWagShores.GetItem(SkullyWagShores.GetChest()).get_name())
 SkullyWagShores.EnterRoom()

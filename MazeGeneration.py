@@ -4,7 +4,13 @@ from collections import deque
 import os
 import platform
 from ChestClasses import chestDistributionWeights, WeightedChance, GetChestName
+from WeaponClass import Weapon
 from PlayerClass import Player
+from PlayerInventoryClass import Bag
+import questionary
+
+
+
 
 def clear_console():
     if platform.system() == "Windows":
@@ -13,6 +19,10 @@ def clear_console():
         os.system("clear")  
 
 clear_console()
+
+
+
+
 
 class Maze:
     def __init__(self, player, enemy, mazeSize):
@@ -27,11 +37,17 @@ class Maze:
         self.exitY = None
         self.errorcount = 0
         self.itemPos = []
+        self.weaponPos = []
+        self.enemyPos = []
         self.ChestStatus = [Player._currentLocation.GetChest(), Player._currentLocation.GetChest()]
 
 
     def CleanUp(self):
         self.maze = self.Generate()
+
+
+
+
 
 
     def Generate(self):
@@ -64,6 +80,12 @@ class Maze:
         return maze
     
 
+
+
+
+
+
+
     def ConvertCell(self, cell):
         if isinstance(cell, str):
             return cell
@@ -82,36 +104,55 @@ class Maze:
 
 
 
+
+
+
+
     def GenerateEntities(self):
-        visited = [(self.startX, self.startY)]
         possibleExits = []
         minDistance = self.mazeSize * 1
         
         directions = [(0, -1), (1, 0), (0, 1), (-1, 0)]
         
-        stack = [((self.startX, self.startY), 0)]
-        while stack:
-            (currentX, currentY), dist = stack.pop(0)
-            if dist > minDistance:
-                possibleExits.append((currentX, currentY))
+        queue = [(self.startX, self.startY)]
+        distanceLevels = {}
+        currentLevel = 0
 
-            random.shuffle(directions)
-            
-
-            
-            for dir in directions:
-                newX, newY = currentX + dir[0], currentY + dir[1]
+        while queue:
+            nextLevel = []
+            for i in range(len(queue)):
+                currentX, currentY = queue[i]
+                if currentLevel > minDistance:
+                    possibleExits.append((currentX, currentY))
                 
-                if 0 <  newX < self.mazeSize and 0 < newY < self.mazeSize and not self.maze[newY][newX]:
-                    if (newX, newY) not in visited:
-                        visited.append((newX, newY))
-                        stack.append(((newX, newY), dist+1))
+                random.shuffle(directions)
+                
+                for dir in directions:
+                    newX, newY = currentX + dir[0], currentY + dir[1]
+                    
+                    if 0 < newX < self.mazeSize and 0 < newY < self.mazeSize and not self.maze[newY][newX]:
+                        if (newX, newY) not in distanceLevels:
+                            distanceLevels[(newX, newY)] = currentLevel + 1
+                            nextLevel.append((newX, newY))
+            
+            queue = nextLevel
+            currentLevel += 1
 
-        print(possibleExits)
+        self.enemyPos = [possibleExits[random.randint(0, len(possibleExits) - 1)], possibleExits[random.randint(0, len(possibleExits) - 1)]]
+
+
+
         possibleExits = [exit for exit in possibleExits if sum(
-            1 for dir in directions if self.maze[tuple(map(sum, zip(exit, dir)))[1]][tuple(map(sum, zip(exit, dir)))[0]]
+            1 for dir in directions if 0 <= exit[1] + dir[1] < self.mazeSize and 0 <= exit[0] + dir[0] < self.mazeSize and 
+            self.maze[exit[1] + dir[1]][exit[0] + dir[0]]
         ) >= 3]
+
                 
+
+        if (len(possibleExits) < 3):
+            self.CleanUp()
+            self.GenerateEntities()
+            return
          
         (self.exitX, self.exitY) = (possibleExits[random.randint(0, len(possibleExits) - 1)])
         possibleExits.remove((self.exitX, self.exitY))
@@ -120,10 +161,10 @@ class Maze:
 
         self.itemPos = [possibleExits[random.randint(0, len(possibleExits) - 1)]]
         possibleExits.remove(self.itemPos[0])
-        self.itemPos.append(possibleExits[random.randint(0, len(possibleExits) - 1)])                    
-
-        return self.exitX, self.exitY
+        self.itemPos.append(possibleExits[random.randint(0, len(possibleExits) - 1)])     
         
+        if random.randint(1, 5) == 5:
+            self.weaponPos.append(possibleExits[random.randint(0, len(possibleExits) - 1)])
 
 
 
@@ -131,7 +172,7 @@ class Maze:
 
     
     def PlayerExplore(self):
-        self.exitX, self.exitY = self.GenerateEntities()
+        self.GenerateEntities()
         playerX, playerY = self.startX, self.startY
         def IsValidMove(maze, positionX, positionY):
             print((positionX, positionY))
@@ -141,6 +182,9 @@ class Maze:
                                                                     # Adding The Items into the map
         self.maze[self.startY][self.startX] = "⍥"
         self.maze[self.exitY][self.exitX] = "E"
+        if self.weaponPos:
+            self.maze[self.weaponPos[0][1]][self.weaponPos[0][0]] = "W"
+            
 
         for idx, pos in enumerate(self.itemPos):
             x, y = pos
@@ -195,18 +239,54 @@ class Maze:
 
             if self.itemPos:
                 if (playerX, playerY) == (self.itemPos[0][0], self.itemPos[0][1]):
-                    input(f"You found a {GetChestName(self.ChestStatus[0])}!")
-                    input(f"Inside was a {Player._currentLocation.GetItem(self.ChestStatus[0]).get_name()}")
-                    self.itemPos.remove(self.itemPos[0])
-                    self.ChestStatus.remove(self.ChestStatus[0])
+                        input(f"You found a {GetChestName(self.ChestStatus[0])}!")
+                        item1 = Player._currentLocation.GetItem(self.ChestStatus[0])
+                        input(f"Inside was a {item1.get_name()}")
+                        ItemStoreChoice = questionary.select(
+                                "What do you want to do?",
+                                choices=[
+                                    'Take it',
+                                    'Leave it',
+                                ]).ask()
+                        if ItemStoreChoice == 'Take it':
+                             Bag.Store(item1)
+                             input(Bag.OpenBag())
+                
+
+                if (playerX, playerY) == (self.itemPos[1][0], self.itemPos[1][1]):
+                        input(f"You found a {GetChestName(self.ChestStatus[1])}!")
+                        item2 = Player._currentLocation.GetItem(self.ChestStatus[0])
+                        input(f"Inside was a {item2.get_name()}")
+                        ItemStoreChoice = questionary.select(
+                                "What do you want to do?",
+                                choices=[
+                                    'Take it',
+                                    'Leave it',
+                                ]).ask()
+                        if ItemStoreChoice == 'Take it':
+                             Bag.Store(item2)
+                             input(Bag.OpenBag())
+
+            if self.weaponPos:
+                if (playerX, playerY) == (self.weaponPos[0][0], self.weaponPos[0][1]):
+                            input(f"You found a {Player._currentLocation.weapon.GetWeaponName()}!")
+                            self.weaponPos.remove(self.weaponPos[0])
+
+            if (playerX, playerY) == (self.enemyPos[0][0], self.enemyPos[0][1]):
+                        input(Player._currentLocation._enemies.appearance_msg())
+            if (playerX, playerY) == (self.enemyPos[1][0], self.enemyPos[1][1]):
+                        input(Player._currentLocation._enemies.appearance_msg())
+                        # initiate combat
+
 
 
             if (playerX, playerY) == (self.exitX, self.exitY):
                 print("Well done! You have completed the maze!")
                 break
 
-
-maze = Maze(2, 2, 7)            
+    
+maze = Maze(2, 2, 17)            
 mazeGenerate = maze.Generate()
 maze.PlayerExplore()
 print(maze.GenerateEntities())
+

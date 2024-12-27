@@ -72,12 +72,8 @@ class Person(PlayerBuffStateMachine):
         self._current_weapon = weapon
         
 
+
+
+
 Player = Person(50, 50, 0, 50, 50, 50)
 Player2 = Person(50, 50, 0, 50, 50, 50)
-Player.equip(katana)
-Player.attack_1(skeleton)
-# skeleton.get_hp()
-# Player.get_stamina()
-pirate_king.attack1(Player)
-Player.get_hp()
-Player.get_player_stats()
