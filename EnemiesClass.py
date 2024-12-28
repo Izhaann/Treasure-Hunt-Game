@@ -15,7 +15,7 @@ class Enemy():
 class Skeletons(Enemy):
     def __init__(self, HP, maxHP, appearance_msg):
         super().__init__(HP, maxHP, appearance_msg)
-        self._dmg = ((random.randint(1, 2)), 3)
+        self._d7mg = ((random.randint(1, 2)), 3)
    
     def attack1(self, player):
         print("The skeleton punches you.")
@@ -128,15 +128,15 @@ class PirateKing(Enemy):
 
 
 
-skeleton = Skeletons(10, 10, "A Skeleton ambushes you from behind!")
-spider = Spiders(10, 10, "A Spider digs their fangs into your leg!")
-ogres = Ogres(15, 15, "An Ogre charges towards you.")
-berserkerfairies = BerserkerFairies(20, 20, "A Fairy whispers into your ear.")
-pirates = Pirates(20, 20, "A Pirate swings his sword at you.")
+skeleton = Skeletons(20, 20, "A Skeleton ambushes you from behind!")
+spider = Spiders(20, 120, "A Spider digs their fangs into your leg!")
+ogres = Ogres(25, 25, "An Ogre charges towards you.")
+berserkerfairies = BerserkerFairies(30, 20, "A Fairy whispers into your ear.")
+pirates = Pirates(35, 35, "A Pirate swings his sword at you.")
 # mini bosses
-ghoul = Ghoul(30, 30, "An ominous aura engulfs you.")
+ghoul = Ghoul(40, 40, "An ominous aura engulfs you.")
 # bosses
-berserker_fairy_monarch = BerserkerFairyMonarch(30, 30, "A sinister smile stretches the Fairy Monarch's face as she plunges a knife into your chest.")
-ogre_commander = OgreCommander(40, 40, "The Ogre Commander lets out a battle cry.")
-pirate_king = PirateKing(60, 60, "The Pirate King ushes you to pick up your weapon for the final time.")
+berserker_fairy_monarch = BerserkerFairyMonarch(50, 50, "A sinister smile stretches the Fairy Monarch's face as she plunges a knife into your chest.")
+ogre_commander = OgreCommander(50, 50, "The Ogre Commander lets out a battle cry.")
+pirate_king = PirateKing(70, 70, "The Pirate King ushes you to pick up your weapon for the final time.")
 

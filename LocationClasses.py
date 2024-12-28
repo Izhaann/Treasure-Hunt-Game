@@ -1,7 +1,6 @@
-
 from WeaponClass import cutlass, mace, katana, scythe, club
 from EnemiesClass import skeleton, spider, ogres, pirates, berserkerfairies, pirate_king
-from ItemClass import HealingPotion, LargeHealingPotion, MaxHealingPotion, StaminaPotion, LargeStaminaPotion, MaxStaminaPotion, Steak, Ogres_Heart, Fairies_Blessing
+from ItemClass import HealingPotion, LargeHealingPotion, MaxHealingPotion, StaminaPotion, LargeStaminaPotion, MaxStaminaPotion, Steak, OgresHeart, FairiesBlessing
 from ExplorationStateMachine import PlayerExplorationStateMachine
 from ChestClasses import chestDistributionWeights, WeightedChance, ItemAssignment
 
@@ -31,6 +30,12 @@ class Location(PlayerExplorationStateMachine):
 
     def GetDesc(self):
         input("description for skull island goes here")
+
+
+
+
+
+
 
 
 

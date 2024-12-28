@@ -9,7 +9,7 @@ class Item:
 
 
 
-class FairiesBlessing(Item):
+class Fairies_Blessing(Item):
     def __init__(self, name, description):
         super().__init__(name, description)
     def use(self, player):
@@ -17,7 +17,7 @@ class FairiesBlessing(Item):
 
 
 
-class OgresHeart(Item):
+class Ogres_Heart(Item):
     def __init__(self, name, description):
         super().__init__(name, description)
     def use(self, player):
@@ -83,5 +83,5 @@ MaxStaminaPotion = Stamina_item("Max Stamina Potion", 60, " A Max Stamina Potion
 
 Steak = Steak_item("Steak", "A delectable, juicy chunk of meat. Increases strength by 20%. Lasts for 3 turns.")
 
-Ogres_Heart = OgresHeart("Ogre's Heart", "The heart of the Ogre Commander. Increases your max HP by 10 forever.")
-Fairies_Blessing = FairiesBlessing("Fairies Blessing", "The Fairies final blessing. Increases your max Stamina by 20 forever")
+OgresHeart = Ogres_Heart("Ogre's Heart", "The heart of the Ogre Commander. Increases your max HP by 10 forever.")
+FairiesBlessing = Fairies_Blessing("Fairies Blessing", "The Fairies final blessing. Increases your max Stamina by 20 forever")

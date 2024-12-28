@@ -17,11 +17,14 @@ class Person(PlayerBuffStateMachine):
         self._maxHP = maxHP
         self._maxStamina = maxStamina
         self._maxDmg = maxDmg
-        self._currentweapon = cutlass
+        self.current_weapon = cutlass
         self._defended = False
-        self._player_combat_turn = True
+        self.player_combat_turn = True
         self._strength = False
         self._currentLocation = SkullyWagShores
+
+
+
     def get_player_stats(self):
         with Progress(console=console) as progress:
             progress.add_task("[bold red]HP", total=self._maxHP, completed=self._hp)
@@ -54,13 +57,13 @@ class Person(PlayerBuffStateMachine):
 
 
     def attack_1(self, enemy):
-        self._current_weapon.attack1(enemy)
-        self._stamina -= self._current_weapon._stamina[0]
-        self._player_combat_turn = False
+        self.current_weapon.attack1(enemy)
+        self._stamina -= self.current_weapon._stamina[0]
+        self.player_combat_turn = False
     def attack_2(self, enemy):
-        self._current_weapon.attack2(enemy)
-        self._stamina -= self._current_weapon._stamina[1]
-        self._player_combat_turn = False
+        self.current_weapon.attack2(enemy)
+        self._stamina -= self.current_weapon._stamina[1]
+        self.player_combat_turn = False
     
     
     def defend(self):
@@ -69,7 +72,7 @@ class Person(PlayerBuffStateMachine):
 
     def equip(self, weapon):
         self.set_dmg(weapon)
-        self._current_weapon = weapon
+        self.current_weapon = weapon
         
 
 

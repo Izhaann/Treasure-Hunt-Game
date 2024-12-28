@@ -8,15 +8,11 @@ from WeaponClass import Weapon
 from PlayerClass import Player
 from PlayerInventoryClass import Bag
 import questionary
+from GameDevelopmentFunctionTools import clear_console
 
 
 
 
-def clear_console():
-    if platform.system() == "Windows":
-        os.system("cls")  
-    else:
-        os.system("clear")  
 
 clear_console()
 
@@ -163,7 +159,7 @@ class Maze:
         possibleExits.remove(self.itemPos[0])
         self.itemPos.append(possibleExits[random.randint(0, len(possibleExits) - 1)])     
         
-        if random.randint(1, 5) == 5:
+        if random.randint(5, 5) == 5:
             self.weaponPos.append(possibleExits[random.randint(0, len(possibleExits) - 1)])
 
 
@@ -172,6 +168,8 @@ class Maze:
 
     
     def PlayerExplore(self):
+        item1NotFound = True
+        item2NotFound = True
         self.GenerateEntities()
         playerX, playerY = self.startX, self.startY
         def IsValidMove(maze, positionX, positionY):
@@ -179,7 +177,7 @@ class Maze:
             return 0 < positionX < self.mazeSize and 0 < positionY < self.mazeSize and not maze[positionY][positionX] or isinstance(maze[positionY][positionX], str)
         
 
-                                                                    # Adding The Items into the map
+                                                                 # Adding The Items into the map
         self.maze[self.startY][self.startX] = "⍥"
         self.maze[self.exitY][self.exitX] = "E"
         if self.weaponPos:
@@ -236,9 +234,10 @@ class Maze:
                     clear_console()
                     self.PrintMaze(self.maze)
 
-
+            
             if self.itemPos:
-                if (playerX, playerY) == (self.itemPos[0][0], self.itemPos[0][1]):
+                if (playerX, playerY) == (self.itemPos[0][0], self.itemPos[0][1]) and item1NotFound:
+                        item1NotFound = False
                         input(f"You found a {GetChestName(self.ChestStatus[0])}!")
                         item1 = Player._currentLocation.GetItem(self.ChestStatus[0])
                         input(f"Inside was a {item1.get_name()}")
@@ -251,9 +250,11 @@ class Maze:
                         if ItemStoreChoice == 'Take it':
                              Bag.Store(item1)
                              input(Bag.OpenBag())
+                        
                 
-
-                if (playerX, playerY) == (self.itemPos[1][0], self.itemPos[1][1]):
+                
+                if (playerX, playerY) == (self.itemPos[1][0], self.itemPos[1][1]) and item2NotFound:
+                        item2NotFound = False
                         input(f"You found a {GetChestName(self.ChestStatus[1])}!")
                         item2 = Player._currentLocation.GetItem(self.ChestStatus[0])
                         input(f"Inside was a {item2.get_name()}")
@@ -266,11 +267,24 @@ class Maze:
                         if ItemStoreChoice == 'Take it':
                              Bag.Store(item2)
                              input(Bag.OpenBag())
+                        
+                             
 
             if self.weaponPos:
                 if (playerX, playerY) == (self.weaponPos[0][0], self.weaponPos[0][1]):
-                            input(f"You found a {Player._currentLocation.weapon.GetWeaponName()}!")
+                            input(f"You found a {Player._currentLocation.weapon.get_name()}!")
                             self.weaponPos.remove(self.weaponPos[0])
+                            ItemStoreChoice = questionary.select(
+                                "What do you want to do?",
+                                choices=[
+                                    'Take it',
+                                    'Leave it',
+                                ]).ask()
+                            if ItemStoreChoice == 'Take it':
+                             Bag.Store(Player._currentLocation.weapon)
+                             input(Bag.OpenArsenal())
+
+
 
             if (playerX, playerY) == (self.enemyPos[0][0], self.enemyPos[0][1]):
                         input(Player._currentLocation._enemies.appearance_msg())
@@ -285,8 +299,5 @@ class Maze:
                 break
 
     
-maze = Maze(2, 2, 17)            
-mazeGenerate = maze.Generate()
-maze.PlayerExplore()
-print(maze.GenerateEntities())
+
 

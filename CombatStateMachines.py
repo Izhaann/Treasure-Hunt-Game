@@ -1,3 +1,4 @@
+
 class PlayerStateBase:
     def __init__(self, context):
         self.context = context
@@ -50,36 +51,52 @@ class PlayerBuffStateMachine:
 
                                             # TURN TRACKER STATE MACHINE
 
-class CombatTurnBase:
-    def __init__(self, context):
-        self.context = context
 
+
+class CombatTurnBase:
+    def __init__(self, context, player_ref):
+        self.context = context
+        self.player_ref = player_ref
     def OnEnter(self):
         pass
 
 class EnemyTurn(CombatTurnBase):
     def OnEnter(self):
-        if self.player_ref._player_combat_turn ==  True:
+        if self.player_ref.player_combat_turn:
             return "player"
-        else:
-            return "enemy"
+        return "enemy"
 class PlayerTurn(CombatTurnBase):
     def OnEnter(self):
-        if self.player_ref._player_combat_turn == False:
+        if not self.player_ref.player_combat_turn:
             return "enemy"
-        else:
-            return "player"
+        return "player"
 class CombatTurnAlternatingStateMachine:
     def __init__(self, player_ref):
         self.states = {
-            "enemy" : EnemyTurn(self),
-            "player" : PlayerTurn(self),
+            "enemy" : EnemyTurn(self, player_ref),
+            "player" : PlayerTurn(self, player_ref),
             }
-        self.currentState = "player"
-        self.player_ref = player_ref
+        self.currentState = "player" if player_ref.player_combat_turn else "enemy"
+        self.TransitionState()
 
     def TransitionState(self):
-        nextstate = self.states[self.currentState].OnEnter()
-        if nextstate != self.currentState:
-           self.currentState = nextstate
-        return True
+        while True:
+            nextstate = self.states[self.currentState].OnEnter()
+            if nextstate != self.currentState:
+                self.currentState = nextstate
+                break
+            else:
+                break
+    
+    
+
+
+
+class player:
+    def __init__(self):
+        self.player_combat_turn = True
+
+Player = player()
+machine = CombatTurnAlternatingStateMachine(Player)
+
+        
