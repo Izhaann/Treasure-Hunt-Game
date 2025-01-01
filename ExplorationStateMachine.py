@@ -40,7 +40,7 @@ class IdleExplorationState(ExplorationBaseState):
 
     def OnExit(self):
         pass
-
+        
 class PlayerExplorationStateMachine:
     def __init__(self, player_ref):
         self.states = {

@@ -1,33 +1,38 @@
 import random
 
 class Enemy():
-    def __init__(self, HP, maxHP, appearance_msg):
+    def __init__(self, name, HP, maxHP, appearance_msg):
         self._hp = HP
         self._maxHP = maxHP
         self._appearance_msg = appearance_msg
+        self._name = name
     def get_hp(self):
         return self._hp
     def appearance_msg(self):
         return self._appearance_msg
+    def get_name(self):
+        return self._name
 
 
 
 class Skeletons(Enemy):
-    def __init__(self, HP, maxHP, appearance_msg):
-        super().__init__(HP, maxHP, appearance_msg)
-        self._d7mg = ((random.randint(1, 2)), 3)
+    def __init__(self, name, HP, maxHP, appearance_msg):
+        super().__init__(name, HP, maxHP, appearance_msg)
+        self._dmg = [random.randint(2, 3), 4]
    
     def attack1(self, player):
         print("The skeleton punches you.")
+        print(self._dmg)
         player._hp -= self._dmg[0]
+
     def attack2(self, player):
         print("The skeleton threw a bone at you.")
         player._hp -= self._dmg[1]
 
 class Spiders(Enemy):
-    def __init__(self, HP, maxHP, appearance_msg):
-        super().__init__(HP,maxHP, appearance_msg)
-        self._dmg = ((random.randint(1, 2)), 3)
+    def __init__(self, name, HP, maxHP, appearance_msg):
+        super().__init__(name, HP, maxHP, appearance_msg)
+        self._dmg = [random.randint(3, 4), 5]
    
     def attack1(self, player):
         print("The spider sinks his fangs into you.")
@@ -37,9 +42,9 @@ class Spiders(Enemy):
         player._hp -= self._dmg[1]
 
 class Ogres(Enemy):
-    def __init__(self, HP, maxHP, appearance_msg):
-        super().__init__(HP,maxHP, appearance_msg)
-        self._dmg = ((random.randint(2, 3)), 4)
+    def __init__(self, name, HP, maxHP, appearance_msg):
+        super().__init__(name, HP, maxHP, appearance_msg)
+        self._dmg = [random.randint(5, 6), 7]
    
     def attack1(self, player):
         print("The ogre swings his club.")
@@ -48,10 +53,10 @@ class Ogres(Enemy):
         print("The ogre smashes your skull")
         player._hp -= self._dmg[1]
 
-class BerserkerFairies(Enemy):
-    def __init__(self, HP, maxHP, appearance_msg):
-        super().__init__(HP,maxHP, appearance_msg)
-        self._dmg = ((random.randint(3, 4)), 5)
+class Elves(Enemy):
+    def __init__(self, name, HP, maxHP, appearance_msg):
+        super().__init__(name, HP, maxHP, appearance_msg)
+        self._dmg = [random.randint(6, 7), 8]
    
     def attack1(self, player):
         print("The fairy unleashes a spell")
@@ -61,9 +66,9 @@ class BerserkerFairies(Enemy):
         player._hp -= self._dmg[1]
 
 class Pirates(Enemy):
-    def __init__(self, HP, maxHP, appearance_msg):
-        super().__init__(HP,maxHP, appearance_msg)
-        self._dmg = ((random.randint(4, 5)), 6)
+    def __init__(self, name, HP, maxHP, appearance_msg):
+        super().__init__(name, HP, maxHP, appearance_msg)
+        self._dmg = [random.randint(7, 8), 9]
    
     def attack1(self, player):
         print("The pirate swings his sword.")
@@ -75,9 +80,9 @@ class Pirates(Enemy):
 
 
 class Ghoul(Enemy):
-    def __init__(self, HP, maxHP, appearance_msg):
-        super().__init__(HP,maxHP, appearance_msg)
-        self._dmg = ((random.randint(6, 7)), 8)
+    def __init__(self, name, HP, maxHP, appearance_msg):
+        super().__init__(name, HP, maxHP, appearance_msg)
+        self._dmg = [random.randint(6, 7), 8]
    
     def attack1(self, player):
         print("The ghoul phases through you.")
@@ -89,9 +94,9 @@ class Ghoul(Enemy):
 
 
 class OgreCommander(Enemy):
-    def __init__(self, HP, maxHP, appearance_msg):
-        super().__init__(HP,maxHP, appearance_msg)
-        self._dmg = ((random.randint(7, 9)), 10)
+    def __init__(self, name, HP, maxHP, appearance_msg):
+        super().__init__(name, HP, maxHP, appearance_msg)
+        self._dmg = [random.randint(9, 10), 12]
    
     def attack1(self, player):
         print("The Commander swings his club.")
@@ -101,10 +106,10 @@ class OgreCommander(Enemy):
         player._hp -= self._dmg[1]
 
 
-class BerserkerFairyMonarch(Enemy):
-    def __init__(self, HP, maxHP, appearance_msg):
-        super().__init__(HP,maxHP, appearance_msg)
-        self._dmg = ((random.randint(6, 8)), 9)
+class ElfMonarch(Enemy):
+    def __init__(self, name, HP, maxHP, appearance_msg):
+        super().__init__(name, HP, maxHP, appearance_msg)
+        self._dmg = [random.randint(8, 9), 10]
    
     def attack1(self, player):
         print("The Monarch unleashes a spell.")
@@ -115,9 +120,9 @@ class BerserkerFairyMonarch(Enemy):
 
 
 class PirateKing(Enemy):
-    def __init__(self, HP, maxHP, appearance_msg):
-        super().__init__(HP,maxHP, appearance_msg)
-        self._dmg = ((random.randint(8, 10)), (random.randint(11, 12)))
+    def __init__(self, name, HP, maxHP, appearance_msg):
+        super().__init__(name, HP, maxHP, appearance_msg)
+        self._dmg = [random.randint(10, 11), random.randint(12, 14)]
    
     def attack1(self, player):
         print("The Pirate King slices you with his cutlass")
@@ -128,15 +133,15 @@ class PirateKing(Enemy):
 
 
 
-skeleton = Skeletons(20, 20, "A Skeleton ambushes you from behind!")
-spider = Spiders(20, 120, "A Spider digs their fangs into your leg!")
-ogres = Ogres(25, 25, "An Ogre charges towards you.")
-berserkerfairies = BerserkerFairies(30, 20, "A Fairy whispers into your ear.")
-pirates = Pirates(35, 35, "A Pirate swings his sword at you.")
+skeleton = Skeletons("Skeleton", 20, 20, "A Skeleton ambushes you from behind!")
+spider = Spiders("Spider", 20, 20, "A Spider digs their fangs into your leg!")
+ogres = Ogres("Ogre", 35, 35, "An Ogre charges towards you.")
+elves = Elves("Elf", 35, 35, "An Elf whispers into your ear.")
+pirates = Pirates("Pirate", 40, 40, "A Pirate swings his sword at you.")
 # mini bosses
-ghoul = Ghoul(40, 40, "An ominous aura engulfs you.")
+ghoul = Ghoul("Ghoul", 30, 30, "An ominous aura engulfs you.")
 # bosses
-berserker_fairy_monarch = BerserkerFairyMonarch(50, 50, "A sinister smile stretches the Fairy Monarch's face as she plunges a knife into your chest.")
-ogre_commander = OgreCommander(50, 50, "The Ogre Commander lets out a battle cry.")
-pirate_king = PirateKing(70, 70, "The Pirate King ushes you to pick up your weapon for the final time.")
+elf_monarch = ElfMonarch("Elf Monarch", 50, 50, "A sinister smile stretches the Fairy Monarch's face as she plunges a knife into your chest.")
+ogre_commander = OgreCommander("Ogre Commander", 50, 50, "The Ogre Commander lets out a battle cry.")
+pirate_king = PirateKing("Pirate King", 70, 70, "The Pirate King ushes you to pick up your weapon for the final time.")
 

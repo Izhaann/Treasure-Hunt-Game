@@ -8,10 +8,11 @@ from WeaponClass import Weapon
 from PlayerClass import Player
 from PlayerInventoryClass import Bag
 import questionary
-from GameDevelopmentFunctionTools import clear_console
+from GameDevelopmentToolsFunctions import clear_console, TimerSleep
+from CombatSystem import Combat
+import time
 
-
-
+import threading
 
 
 clear_console()
@@ -106,7 +107,7 @@ class Maze:
 
     def GenerateEntities(self):
         possibleExits = []
-        minDistance = self.mazeSize * 1
+        minDistance = self.mazeSize * 2
         
         directions = [(0, -1), (1, 0), (0, 1), (-1, 0)]
         
@@ -159,8 +160,9 @@ class Maze:
         possibleExits.remove(self.itemPos[0])
         self.itemPos.append(possibleExits[random.randint(0, len(possibleExits) - 1)])     
         
-        if random.randint(5, 5) == 5:
-            self.weaponPos.append(possibleExits[random.randint(0, len(possibleExits) - 1)])
+        if Player._currentLocation.weapon != None:
+            if random.randint(1, 5) == 5:
+                self.weaponPos.append(possibleExits[random.randint(0, len(possibleExits) - 1)])
 
 
 
@@ -170,6 +172,8 @@ class Maze:
     def PlayerExplore(self):
         item1NotFound = True
         item2NotFound = True
+        Enemy1NotEncountered = True
+        Enemy2NotEncountered = True
         self.GenerateEntities()
         playerX, playerY = self.startX, self.startY
         def IsValidMove(maze, positionX, positionY):
@@ -200,7 +204,6 @@ class Maze:
 
         while True:
             clear_console()
-            
             self.PrintMaze(self.maze)
             PlayerInput = getch.getch()
             if PlayerInput.lower() == "w":
@@ -286,11 +289,21 @@ class Maze:
 
 
 
-            if (playerX, playerY) == (self.enemyPos[0][0], self.enemyPos[0][1]):
+            if (playerX, playerY) == (self.enemyPos[0][0], self.enemyPos[0][1]) and Enemy1NotEncountered:
+                        Enemy1NotEncountered = False
                         input(Player._currentLocation._enemies.appearance_msg())
-            if (playerX, playerY) == (self.enemyPos[1][0], self.enemyPos[1][1]):
+                        print("Prepare for combat")
+                        TimerSleep()
+                        Combat.ResetEnemy(Player._currentLocation._enemies)
+                        Combat.CombatMenu(Player._currentLocation._enemies)
+                        
+            if (playerX, playerY) == (self.enemyPos[1][0], self.enemyPos[1][1]) and Enemy2NotEncountered:
+                        Enemy2NotEncountered = False
                         input(Player._currentLocation._enemies.appearance_msg())
-                        # initiate combat
+                        print("Prepare for combat")
+                        TimerSleep()
+                        Combat.ResetEnemy(Player._currentLocation._enemies)
+                        Combat.CombatMenu(Player._currentLocation._enemies)
 
 
 
@@ -298,6 +311,46 @@ class Maze:
                 print("Well done! You have completed the maze!")
                 break
 
+def CreateMaze():
+    
+    maze = Maze(2, 2, 17)
+    maze.PlayerExplore()
     
 
+
+
+
+
+def ActionPrompt():
+    
+    def prompt_with_sleep():
+        RoomCount = 1
+        Action = questionary.select(
+            "What will you do?",
+            choices = [
+                "Explore",
+                "Check Inventory",
+            ]
+        ).ask()
+
+        if Action == "Explore":
+            CreateMaze()
+            RoomCount += 1
+            if RoomCount <= 4:
+                prompt_with_sleep()
+
+            else:
+                 return ""
+
+        if Action == "Check Inventory":
+            Bag.OpenInventory()
+            prompt_with_sleep()
+
+    prompt_thread = threading.Thread(target=prompt_with_sleep)
+    prompt_thread.start()
+    prompt_thread.join()
+    
+
+
+    
 

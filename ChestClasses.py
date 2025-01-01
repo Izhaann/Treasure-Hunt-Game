@@ -19,7 +19,6 @@ def WeightedChance(weights):
         weighted += x
         if chance < weighted:
             return i
-print(ItemAssignment[WeightedChance(chestDistributionWeights[0])].get_description())
 
 def GetChestName(Index):
     if Index == 0:

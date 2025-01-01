@@ -15,6 +15,21 @@ class Weapon:
     def get_desc(self):
         return self.desc
     
+#
+class Stick(Weapon):
+    def __init__(self, name, Dmg, Stamina, description, AttackName1, AttackName2):
+        super().__init__(name, Dmg, Stamina, description, AttackName1, AttackName2)
+    def get_dmg(self):
+        return self.dmg
+    def attack1_msg(self):
+        print("You deliver a sharp thrust with the end of your stick.")
+        return ""
+    def attack2_msg(self):
+        print("You thwart the enemy with your blunt weapon")
+        return ""
+
+
+
 
 class Cutlass(Weapon):
     def __init__(self, name, Dmg, Stamina, description, AttackName1, AttackName2):
@@ -84,11 +99,12 @@ class Club(Weapon):
 
 
 
-cutlass = Cutlass("Cutlass", (6, 8), (10, 15), "A basic blade with blunt edges. The only weapon you could find.", "Slash", "Stab")
-mace = Mace("Mace", (10, 15), (20, 25), "A heavy, blunt weapon designed for crushing blows. Capable of very large bursts of damage.", "Thrash", "Swing")
+stick = Stick("Stick", (100, 5), (5, 8), "A small yet powerful weapon crafted by Mother Mature herself. The only weapon you could find", "Poke", "Thwart")
+cutlass = Cutlass("Cutlass", (4, 6), (6, 10), "A basic blade with blunt edges.", "Slash", "Stab")
+mace = Mace("Mace", (9, 13), (15, 20), "A heavy, blunt weapon designed for crushing blows. Capable of very large bursts of damage.", "Thrash", "Swing")
 katana = Katana("Katana", (8, 12), (10, 15), "A versatile blade crafted with care. Capable of very swift attacks", "Dice", "Strike")
-scythe = Scythe("Scythe", (12, 16), (15, 20), "A curved blade forged for reaping, repurposed for combat. Capable of large and slightly quick attacks.", "Cleave", "Carve")
-club = Club("Club", (20, 25), (30, 40), "A very heavy hunk of metal, too large to be called a sword. Capable of extremely large attacks.", "Crush", "Smash")
+scythe = Scythe("Scythe", (11, 14), (20, 25), "A curved blade forged for reaping, repurposed for combat. Capable of large and slightly quick attacks.", "Cleave", "Carve")
+club = Club("Club", (15, 20), (25, 30), "A very heavy hunk of metal, too large to be called a sword. Capable of extremely large attacks.", "Crush", "Smash")
 
 
 
