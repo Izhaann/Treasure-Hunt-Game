@@ -54,13 +54,11 @@ class Sleep_Potion(Item):
     def __init__(self, name, description):
         super().__init__(name, description)
     def use(self, enemy):
-        pass
-        # This will spare the enemies turn, need to create the in battle/ battle state machine first.
+        SleepEnemy = True
+        return ""
 
 
-
-
-class Steak_item(Item):
+class SleepPotion_item(Item):
     def __init__(self, name, description):
         super().__init__(name, description)
     def use(self, player):
@@ -81,7 +79,7 @@ StaminaPotion = Stamina_item("Stamina Potion", 15, " A Regular Stamina Potion. R
 LargeStaminaPotion = Stamina_item("Large Stamina Potion", 30, " A Large Stamina Potion. Restores 30 Stamina")
 MaxStaminaPotion = Stamina_item("Max Stamina Potion", 60, " A Max Stamina Potion. Restores all of your Stamina")
 
-Steak = Steak_item("Steak", "A delectable, juicy chunk of meat. Increases strength by 20%. Lasts for 3 turns.")
+SleepPotion = Sleep_Potion("Sleep Potion", "A mystical Potion, created by the elves. Spares the enemy.")
 
-OgresHeart = Ogres_Heart("Ogre's Heart", "The heart of the Ogre Commander. Increases your max HP by 10 forever.")
+OgresHeart = Ogres_Heart("Ogres Heart", "The heart of the Ogre Commander. Increases your max HP by 10 forever.")
 FairiesBlessing = Fairies_Blessing("Fairies Blessing", "The Fairies final blessing. Increases your max Stamina by 20 forever")

@@ -1,4 +1,4 @@
-from ItemClass import HealingPotion, LargeHealingPotion, MaxHealingPotion, StaminaPotion, LargeStaminaPotion, MaxStaminaPotion, Steak, OgresHeart, FairiesBlessing
+from ItemClass import HealingPotion, LargeHealingPotion, MaxHealingPotion, StaminaPotion, LargeStaminaPotion, MaxStaminaPotion, SleepPotion, OgresHeart, FairiesBlessing
 from WeaponClass import stick, cutlass, mace, scythe, club, katana
 from PlayerClass import Player
 import questionary
@@ -7,13 +7,13 @@ class Inventory():
     def __init__(self, capacityMax):
         
         self.items = {
-            HealingPotion: 0,
-            LargeHealingPotion: 0,
-            MaxHealingPotion: 0,
+            HealingPotion: 3,
+            LargeHealingPotion: 2,
+            MaxHealingPotion: 1,
             StaminaPotion: 0,
             LargeStaminaPotion: 0,
             MaxStaminaPotion: 0,
-            Steak: 0,
+            SleepPotion: 0,
             OgresHeart: 0,
             FairiesBlessing: 0
 
@@ -98,7 +98,9 @@ class Inventory():
                     print(f"{weapon.get_name()} | {weapon.get_desc()} - CURRENT WEAPON")
                 else:
                     print(f"{weapon.get_name()} | {weapon.get_desc()}")
+        input()
         return ""
+                    
 
 
     def Store(self, item):
@@ -159,6 +161,7 @@ class Inventory():
         elif InventoryChoice == 'Use Item':
             if self._capacity ==0:
                 input("You have no items to use :(")
+                self.OpenInventory()
                 return ""
 
             choices = [item.get_name() for item in self.items if self.items[item] != 0]
@@ -175,10 +178,10 @@ class Inventory():
                 
             
         
-        
         elif InventoryChoice == 'Show Weapons':
             self.OpenArsenal()
             return self.OpenInventory()
+            
 
             
         elif InventoryChoice == 'Equip Weapon':

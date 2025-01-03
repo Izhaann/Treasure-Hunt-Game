@@ -1,27 +1,30 @@
 from WeaponClass import cutlass, mace, katana, scythe, club
 from EnemiesClass import skeleton, spider, ogres, pirates, elves, pirate_king, ghoul, ogre_commander, elf_monarch
-from ItemClass import HealingPotion, LargeHealingPotion, MaxHealingPotion, StaminaPotion, LargeStaminaPotion, MaxStaminaPotion, Steak, OgresHeart, FairiesBlessing
-from ExplorationStateMachine import PlayerExplorationStateMachine
+from ItemClass import HealingPotion, LargeHealingPotion, MaxHealingPotion, StaminaPotion, LargeStaminaPotion, MaxStaminaPotion, SleepPotion, OgresHeart, FairiesBlessing
 from ChestClasses import chestDistributionWeights, WeightedChance, ItemAssignment
 import time
 from GameDevelopmentToolsFunctions import clear_console
+import questionary
 from rich import print
 import sys
 import getch
 
 
-class Location(PlayerExplorationStateMachine):
-    def __init__(self, chest_probability, enemies, weapon):
+class Location():
+    def __init__(self, name, chest_probability, enemies, weapon):
         
         self._enemies = enemies
         self._chest_probability = chest_probability
         self.weapon = weapon
+        self.name = name
 
     def GetChest(self):
         return (WeightedChance(self._chest_probability))
     def GetItem(self, chestIndex):
         return ItemAssignment[WeightedChance(chestDistributionWeights[chestIndex])]
-        
+    
+    def GetName(self):
+        return self.name
         
     def GetDesc(self):
         print("description goes here")
@@ -35,15 +38,15 @@ class Location(PlayerExplorationStateMachine):
 
 
 
-SkullyWagShores = Location((80, 15, 5), skeleton, cutlass)
-VenomousCove = Location((70, 35, 5), spider, mace)
-GhastlyReef = Location((60, 30, 10), ghoul, scythe)
-WhisperingHollow = Location((50, 30, 20), elves, katana) # + elf monarch
+SkullyWagShores = Location("Skully Wag Shores", (80, 15, 5), skeleton, cutlass)
+VenomousCove = Location("Venomous Cove", (70, 35, 5), spider, mace)
+GhastlyReef = Location("Ghastly Reef", (60, 30, 10), ghoul, scythe)
+WhisperingHollow = Location("Whispering Hollow", (50, 30, 20), elves, katana) # + elf monarch
 
-Brutalith = Location((50, 25, 25), ogres, club) # + ogre commander
-BlackWater = Location((40, 25, 35), pirates, None)
+Brutalith = Location("Brutalith", (50, 25, 25), ogres, club) # + ogre commander
+BlackWater = Location("BlackWater Bay", (40, 25, 35), pirates, None)
 # just the bossfight
-GodValley = Location((0, 0, 0), pirate_king, None)
+GodValley = Location("God Valley", (0, 0, 0), pirate_king, None)
 
 def Write(Sentence):
     for char in Sentence:
@@ -69,8 +72,8 @@ def GetLocationDescription(Location):
 
     if Location == "Start":
         clear_console()
-        Skip=input("Skip Cutscene? (Y/N)")
-        if Skip.lower() == "y":
+        Skip = questionary.confirm(f"Skip Cutscene?").ask()
+        if Skip:
             return ""
         Write("Flooding with confidence and with your trusty weapon:\033[1m the Stick\033[0m you unleash your boat from it's dock, bidding farewell to the comfort of your familiar home and sailing into the darkness of the unknown.")
         Write("\nMany miles from home, a sudden rattling from a barrel catches your attention.")
@@ -87,10 +90,10 @@ def GetLocationDescription(Location):
         return ""
     if Location == SkullyWagShores:
         clear_console()
-        Skip=input("Skip Cutscene? (Y/N)")
-        if Skip.lower() == "y":
+        Skip = questionary.confirm(f"Skip Cutscene?").ask()
+        if Skip:
             return ""
-        Write("\033[32mSkully Wag Shores\033[0m\n")
+        Write("\033[32mSkully Wag Shores\033[0m")
         Write("\n*Desparity engulfed the place around you. Everything in your sight had this eerie feeling of emptiness and abandonment.")
         Write("\nThe once vibrant landscape now lay in a haunting silence, as if the world itself had been drained of life.")
         Write("\nThe skies above, once filled with the hues of dawn, were now a dull, oppressive gray, heavy with the weight of forgotten memories.")
@@ -105,10 +108,10 @@ def GetLocationDescription(Location):
         input()
     if Location == VenomousCove:
         clear_console()
-        Skip=input("Skip Cutscene? (Y/N)")
-        if Skip.lower() == "y":
+        Skip = questionary.confirm(f"Skip Cutscene?").ask()
+        if Skip:
             return ""
-        Write("\033[32mVenomous Cove\033[0m\n")
+        Write("\033[32mVenomous Cove\033[0m")
         Write("*Trails of webs shroud the terrain infront of you. The tangled forest ahead tainted with towering arachnids that crawled through the labyrinth of webs...*")
 
         print(f"\n\n[bold yellow]Puck: [/bold yellow]")
@@ -121,26 +124,26 @@ def GetLocationDescription(Location):
         return ""
     if Location == GhastlyReef:
         clear_console()
-        Skip=input("Skip Cutscene? (Y/N)")
-        if Skip.lower() == "y":
+        Skip = questionary.confirm(f"Skip Cutscene?").ask()
+        if Skip:
             return ""
-        Write("\033[32mGhastly Reef\033[0m\n")
+        Write("\033[32mGhastly Reef\033[0m")
         Write("*Hows echoed through the land as gusts of wind blew icy cold air. Rotting plant-life littered the land, standing beneath the eerily dark hues of the sky.")
         Write("There was not a soul in sight, yet it seemed as though your every move was being observed. A barren wasteland, silently withering away in the corner of the Earth awaited you...*")
 
         print(f"\n\n[bold yellow]Puck: [/bold yellow]")
         Write("This place is creepy. I have an unshakeable feeling that we're being watched.")
-        Write("Even being the amazing, smart, intelligent, unrivaled dictionary I am, I have never heard much of this place.")
-        Write("One thing is for sure though: we aren't alone.")
+        Write("\nEven being the amazing, smart, intelligent, unrivaled dictionary I am, I have never heard much of this place.")
+        Write("\nOne thing is for sure though: we aren't alone.")
         input()
         return ""
 
     if Location == WhisperingHollow:
         clear_console()
-        Skip=input("Skip Cutscene? (Y/N)")
-        if Skip.lower() == "y":
+        Skip = questionary.confirm(f"Skip Cutscene?").ask()
+        if Skip:
             return ""
-        Write("\033[32mWhispering Hollow\033[0m\n")
+        Write("\033[32mWhispering Hollow\033[0m")
         Write("*A paradise could be the only words to describe this haven.")
         Write("\nFireflies playfully danced in the luscious trees that seemed as old as time itself.")
         Write("\nIn the heart of this enchanted woodland, a crystal-clear stream winds its way through the underbrush, its waters glowing with a soft blue light as if infused with magic...*")
@@ -156,8 +159,8 @@ def GetLocationDescription(Location):
         return ""
     if Location == "WhisperingHollowBossFight":
         clear_console()
-        Skip=input("Skip Cutscene? (Y/N)")
-        if Skip.lower() == "y":
+        Skip = questionary.confirm(f"Skip Cutscene?").ask()
+        if Skip:
             return ""
         Write("*The Elf Monarch gracefully sat on her throne, gazing down at you in arrogance.")
 
@@ -166,15 +169,19 @@ def GetLocationDescription(Location):
         Write("\nThere is no reason for us to fight, take it easy, you will be safe here with us forever...")
 
         Write("*Enchanted by her words you loosen the grip on your weapon. In some kind of daze, you lower your guard.*")
+        input()
+        clear_console()
         elf_monarch.appearance_msg()
+        input()
+
 
         return ""
     if Location == Brutalith:
         clear_console()
-        Skip=input("Skip Cutscene? (Y/N)")
-        if Skip.lower() == "y":
+        Skip = questionary.confirm(f"Skip Cutscene?").ask()
+        if Skip:
             return ""
-        Write("\033[32mBrutalith\033[0m\n")
+        Write("\033[32mBrutalith\033[0m")
         Write("Overwhelmingly great statues greet you at the entrance of this land. Around you, Ogres battled each other as crowds cheered in delight.")
         Write("The terrain was littered with wild forests and enormous, crumbling stone ruins that whisper of ancient, monstrous inhabitants...*")
 
@@ -190,23 +197,26 @@ def GetLocationDescription(Location):
 
     if Location == "BrutalithBossFight":
         clear_console()
-        Skip=input("Skip Cutscene? (Y/N)")
-        if Skip.lower() == "y":
+        Skip = questionary.confirm(f"Skip Cutscene?").ask()
+        if Skip:
             return ""
         print(f"\n\n[bold yellow]Ogre Commander: [/bold yellow]")
         Write("So you were the one who was able to defeat my strongest warriors. I commend your strengths, little one.")
         Write("\nProve to me your efforts to get here were not in vain, fight me with all your will.")
+        input()
+        clear_console()
         ogre_commander.appearance_msg()
+        input()
         return ""
 
     if Location == BlackWater:
         clear_console()
-        Skip=input("Skip Cutscene? (Y/N)")
-        if Skip.lower() == "y":
+        Skip = questionary.confirm(f"Skip Cutscene?").ask()
+        if Skip:
             return ""
-        Write("\033[32mBlackWater Bay\033[0m\n")
+        Write("\033[32mBlackWater Bay\033[0m")
         print(f"\n\n[bold yellow]Puck: [/bold yellow]")
-        Write("This is the last stop in our reach \033[31mPThe Pirate King\033[0m.")
+        Write("This is the last stop in our journey to reach \033[31mThe Pirate King\033[0m.")
         Write("\nThis island was built almost like an iron-curtain to prevent anyone from progressing further.")
         Write("\nHis crew will be the toughest opponents you have ever faced.")
         Write("\nGood Luck.")
@@ -214,18 +224,20 @@ def GetLocationDescription(Location):
         return ""
     if Location == GodValley:
         clear_console()
-        Skip=input("Skip Cutscene? (Y/N)")
-        if Skip.lower() == "y":
+        Skip = questionary.confirm(f"Skip Cutscene?").ask()
+        if Skip:
             return ""
-        Write("\033[32mGod Valley\033[0m\n")
+        Write("\033[32mGod Valley\033[0m")
         Write("*You final foe now sat infront of you, his great sword plunged into the ground beside him*")
 
         Write("\n\n\033[31mPirate King: \033[0m")
         Write("\nI have been expecting you.")
         Write("\nYou were the first ever to reach me, let me know your name.")
-        # Nuts gives his name
-        Write("\nNot very talkative I see.")
-        Write("\nWell, not that there is any point, soon one of us will be slaughtered in the hands of the other.")
+        Write(f"\n\n\033[1m\033[33m???: \033[0m")
+        WriteCustomTime(f"...", 0.8)
+        Write("\n\n\033[31mPirate King: \033[0m")
+        Write("Not very talkative I see.")
+        Write("\nWell not that there is any point, soon one of us will be slaughtered by the hands of the other.")
         Write("\nBe the one who can finally put my tyranny to an end.")
         input()
         pirate_king.appearance_msg()

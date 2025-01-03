@@ -161,7 +161,7 @@ class Maze:
         self.itemPos.append(possibleExits[random.randint(0, len(possibleExits) - 1)])     
         
         if Player._currentLocation.weapon != None:
-            if random.randint(1, 5) == 5:
+            if random.randint(1, 3) == 3:
                 self.weaponPos.append(possibleExits[random.randint(0, len(possibleExits) - 1)])
 
 
@@ -182,7 +182,7 @@ class Maze:
         
 
                                                                  # Adding The Items into the map
-        self.maze[self.startY][self.startX] = "⍥"
+        self.maze[self.startY][self.startX] = "⍟"
         self.maze[self.exitY][self.exitX] = "E"
         if self.weaponPos:
             self.maze[self.weaponPos[0][1]][self.weaponPos[0][0]] = "W"
@@ -204,20 +204,21 @@ class Maze:
 
         while True:
             clear_console()
+            print(f"\033[32m{Player._currentLocation.GetName()}\033[0m")
             self.PrintMaze(self.maze)
             PlayerInput = getch.getch()
             if PlayerInput.lower() == "w":
                 if IsValidMove(self.maze, playerX, playerY-1):
                     self.maze[playerY][playerX] = False
                     playerY = playerY-1
-                    self.maze[playerY][playerX] = "⍥"
+                    self.maze[playerY][playerX] = "⍟"
                     clear_console()
                     self.PrintMaze(self.maze)
             elif PlayerInput.lower() == "a":
                 if IsValidMove(self.maze, playerX-1, playerY):
                     self.maze[playerY][playerX] = False
                     playerX = playerX-1
-                    self.maze[playerY][playerX] = "⍥"
+                    self.maze[playerY][playerX] = "⍟"
                     clear_console()
                     self.PrintMaze(self.maze)
                 
@@ -225,7 +226,7 @@ class Maze:
                 if IsValidMove(self.maze, playerX, playerY+1):
                     self.maze[playerY][playerX] = False
                     playerY = playerY+1
-                    self.maze[playerY][playerX] = "⍥"
+                    self.maze[playerY][playerX] = "⍟"
                     clear_console()
                     self.PrintMaze(self.maze)
                 
@@ -233,7 +234,7 @@ class Maze:
                 if IsValidMove(self.maze, playerX+1, playerY):
                     self.maze[playerY][playerX] = False
                     playerX= playerX+1
-                    self.maze[playerY][playerX] = "⍥"
+                    self.maze[playerY][playerX] = "⍟"
                     clear_console()
                     self.PrintMaze(self.maze)
 
@@ -252,7 +253,7 @@ class Maze:
                                 ]).ask()
                         if ItemStoreChoice == 'Take it':
                              Bag.Store(item1)
-                             input(Bag.OpenBag())
+                             Bag.OpenBag()
                         
                 
                 
@@ -308,7 +309,6 @@ class Maze:
 
 
             if (playerX, playerY) == (self.exitX, self.exitY):
-                print("Well done! You have completed the maze!")
                 break
 
 def CreateMaze():
@@ -322,9 +322,9 @@ def CreateMaze():
 
 
 def ActionPrompt():
-    
-    def prompt_with_sleep():
-        RoomCount = 1
+    global RoomCount
+    RoomCount = 1
+    def prompt_with_sleep(RoomCount):
         Action = questionary.select(
             "What will you do?",
             choices = [
@@ -332,21 +332,22 @@ def ActionPrompt():
                 "Check Inventory",
             ]
         ).ask()
+       
 
         if Action == "Explore":
             CreateMaze()
             RoomCount += 1
-            if RoomCount <= 4:
-                prompt_with_sleep()
+            if RoomCount <= 1:
+                prompt_with_sleep(RoomCount)
 
             else:
                  return ""
 
         if Action == "Check Inventory":
             Bag.OpenInventory()
-            prompt_with_sleep()
+            prompt_with_sleep(RoomCount)
 
-    prompt_thread = threading.Thread(target=prompt_with_sleep)
+    prompt_thread = threading.Thread(target=lambda: prompt_with_sleep(RoomCount))
     prompt_thread.start()
     prompt_thread.join()
     

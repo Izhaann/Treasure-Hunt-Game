@@ -21,6 +21,7 @@ class Person():
         self._strength = True
         self._currentLocation = Brutalith
         self.name = ""
+        self.death_status = False
 
 
 
@@ -74,7 +75,10 @@ class Person():
     
     def defend(self):
         self._defended = True
-        self._stamina += 20
+        if (self._maxStamina - self._stamina) < 20:
+            self.add_stamina(self._maxStamina - self._stamina)
+        else:
+            self.add_stamina(20)
 
 
     def equip(self, weapon):

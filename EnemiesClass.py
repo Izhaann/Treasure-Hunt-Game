@@ -22,7 +22,6 @@ class Skeletons(Enemy):
    
     def attack1(self, player):
         print("The skeleton punches you.")
-        print(self._dmg)
         player._hp -= self._dmg[0]
 
     def attack2(self, player):

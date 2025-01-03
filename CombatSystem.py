@@ -8,6 +8,7 @@ from GameDevelopmentToolsFunctions import clear_console, TimerSleep
 from EnemiesClass import skeleton
 import random
 import sys
+from LocationClasses import GetLocationDescription
 
                                                                             # Strength Implementation
 
@@ -78,10 +79,19 @@ class CombatClass(CombatTurnBase, CombatTurnAlternatingStateMachine):
         
 
 
-
+    
     clear_console()
     def CombatMenu(self, enemy):
-
+        EnemySleep = False
+        if EnemySleep == True:
+            print("You put the enemy to sleep")
+            TimerSleep()
+            CombatTurnAlternatingStateMachineRef.EndStateMachine()
+            self.InCombat = False
+        
+            
+            
+        
 
         
 
@@ -97,7 +107,7 @@ class CombatClass(CombatTurnBase, CombatTurnAlternatingStateMachine):
             self.EnemyAttack(enemy)
 
             CombatTurnAlternatingStateMachineRef.IncrementState()
-            TimerSleep()
+            input()
         
         
         if enemy._hp <= 0:
@@ -107,15 +117,16 @@ class CombatClass(CombatTurnBase, CombatTurnAlternatingStateMachine):
             CombatTurnAlternatingStateMachineRef.EndStateMachine()
             self.InCombat = False
 
-        if Player._hp < 0:
+        
+        if Player._hp <= 0:
             clear_console()
+            Player.death_status = True
             print(f"You were slain by the {enemy.get_name()}")
             print("Take this time to reflect upon your mistakes.")
             TimerSleep()
             TimerSleep()
             TimerSleep()
             sys.exit()
-            
 
 
 
@@ -148,15 +159,21 @@ class CombatClass(CombatTurnBase, CombatTurnAlternatingStateMachine):
                 
                 
                 if AttackChoice == attackOption1:
-                    print(Player.current_weapon.attack1_msg())
-                    Player.attack_1(enemy)
-                    CombatTurnAlternatingStateMachineRef.IncrementState()
+                    if Player._stamina >= Player.current_weapon._stamina[0]:
+                        print(Player.current_weapon.attack1_msg())
+                        Player.attack_1(enemy)
+                        CombatTurnAlternatingStateMachineRef.IncrementState()
+                    else:
+                        print("You do not have enough stamina for that attack!")
             
 
                 if AttackChoice == attackOption2:
-                    print(Player.current_weapon.attack2_msg())
-                    Player.attack_2(enemy)
-                    CombatTurnAlternatingStateMachineRef.IncrementState()
+                    if Player._stamina >= Player.current_weapon._stamina[1]:
+                        print(Player.current_weapon.attack2_msg())
+                        Player.attack_2(enemy)
+                        CombatTurnAlternatingStateMachineRef.IncrementState()
+                    else:
+                        print("You do not have enough stamina for that attack!")
                 self.CombatMenu(enemy)
 
                 if AttackChoice == "Back":
@@ -177,8 +194,24 @@ class CombatClass(CombatTurnBase, CombatTurnAlternatingStateMachine):
             
 
                 
-
+    def BossFight(self, Location, Boss, Item):
+        GetLocationDescription(Location)
+        Combat.CombatMenu(Boss)
+        input(f"You recieved The {Item.get_name()}")
+        ItemStoreChoice = questionary.select(
+                "What do you want to do?",
+                choices=[
+                    'Take it',
+                    'Leave it',
+                ]).ask()
+        if ItemStoreChoice == 'Take it':
+                Bag.Store(Item)
+                input(Bag.OpenBag())
             
+
+
+
+
 
 
 Combat = CombatClass()

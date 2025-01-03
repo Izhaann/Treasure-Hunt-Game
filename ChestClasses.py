@@ -1,14 +1,14 @@
-from ItemClass import HealingPotion, LargeHealingPotion, MaxHealingPotion, StaminaPotion, LargeStaminaPotion, MaxStaminaPotion, Steak
+from ItemClass import HealingPotion, LargeHealingPotion, MaxHealingPotion, StaminaPotion, LargeStaminaPotion, MaxStaminaPotion, SleepPotion
 import random
-ItemAssignment = [HealingPotion, LargeHealingPotion, MaxHealingPotion, StaminaPotion, LargeStaminaPotion, MaxStaminaPotion, Steak]
+ItemAssignment = [HealingPotion, LargeHealingPotion, MaxHealingPotion, StaminaPotion, LargeStaminaPotion, MaxStaminaPotion, SleepPotion]
 
 
 
 chestDistributionWeights = [
     # HP  LHP MHP SP LSP MSP S
-    [30, 15, 0, 30, 15, 0, 10], # Wooden
-    [20, 15, 10, 20, 15, 10, 10], # Silver
-    [15, 10, 25, 15, 10, 25, 20], # Golden
+    [40, 15, 5, 20, 15, 0, 5], # Wooden
+    [20, 20, 15, 20, 10, 5, 10], # Silver
+    [15, 20, 30, 15, 15, 15, 20], # Golden
 ]
 
 def WeightedChance(weights):

@@ -1,4 +1,6 @@
 from LocationClasses import GetLocationDescription, Write, WriteCustomTime, GodValley, GhastlyReef, SkullyWagShores, VenomousCove, WhisperingHollow, Brutalith, BlackWater
+from ItemClass import OgresHeart, FairiesBlessing
+from EnemiesClass import pirate_king, ogre_commander, elf_monarch
 from PlayerClass import Player
 import questionary
 from colorama import init, Fore, Style
@@ -6,7 +8,10 @@ from art import text2art
 import pyfiglet
 from PlayerInventoryClass import Bag
 import getch
+from CombatSystem import Combat
+from GameDevelopmentToolsFunctions import clear_console
 from MazeGeneration import CreateMaze, ActionPrompt
+import sys
 init()
 
     
@@ -28,6 +33,7 @@ def StartGame():
 
 
 def TitleScreen():
+    clear_console()
     title_ascii_ar = text2art("HUNT", font="ghost")
     title_ascii_art = Fore.RED + title_ascii_ar + Style.RESET_ALL
     print(title_ascii_art)
@@ -41,18 +47,27 @@ def TitleScreen():
     if TitleScreenSelection == "Start Game":
         MainLoop()
     elif TitleScreenSelection == "How to Play":
-        print("The gameplay focusses mainly on a character who navigates their way through mazes.")
+        print("The gameplay focuses mainly on a character who navigates their way through mazes.")
         print("\n\033[4mControls:\033[0m")
         print("\033[1mMaze Controls:\033[0m simply press (W, A, S, D)")
         print("\033[1mSelection Controls:\033[0m Arrow keys to move, Enter to select")
         print("\n\033[4mInfo:\033[0m")
-        print("\033[1mB, S, G =\033[0mBronze, Silver, Gold Chest")
+        print("\033[1mB, S, G =\033[0m Bronze, Silver, Gold Chest")
+        print("\033[1m⍟  =\033[0m You!")
         print("\033[1mE =\033[0m Exit")
         print("\033[1mW = \033[0mWeapon")
+        input()
+        return TitleScreen()
+    
+    elif TitleScreenSelection == "Exit":
+        print("Goodbye")
+        sys.exit()
     return ""
 
 
 def MainLoop():
+    if Player.death_status:
+        sys.exit()
     StartGame()
     NextIsland = questionary.select(
         "Which island will you sail to?",
@@ -82,13 +97,14 @@ def MainLoop():
         NextIsland = questionary.select(
         "Which island will you sail to?",
         choices = [
-            "Ghastly Reef",
+            "Ghastly Reef"
 
         ]).ask()
         if NextIsland == "Ghastly Reef":
             EnterIsland(GhastlyReef)
             ActionPrompt()
-    elif NextIsland == "GhastlyReef":
+
+    elif NextIsland == "Ghastly Reef":
         EnterIsland(GhastlyReef)
         ActionPrompt()
 
@@ -107,6 +123,7 @@ def MainLoop():
     if NextIsland == "Whispering Hollow":
         EnterIsland(WhisperingHollow)
         ActionPrompt()
+        Combat.BossFight("WhisperingHollowBossFight", elf_monarch, FairiesBlessing)
 
 
 
@@ -119,6 +136,9 @@ def MainLoop():
     if NextIsland == "Brutalith":
         EnterIsland(Brutalith)
         ActionPrompt()
+        Combat.BossFight("BrutalithBossFight", ogre_commander, OgresHeart)
+        
+
         NextIsland = questionary.select(
             "Which island will you sail to?",
             choices = [
@@ -140,7 +160,7 @@ def MainLoop():
             ]).ask()
     if NextIsland == "God Valley":
             EnterIsland(GodValley)
-            ActionPrompt()
+            Combat.CombatMenu(pirate_king)
             GetLocationDescription("Ending")
     
 
